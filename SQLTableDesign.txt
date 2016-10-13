@@ -1,0 +1,261 @@
+﻿1.)Create one table to collect Employee Information for a new hire. What fields would you include? What data types for those fields should you use?
+
+
+USE [EmployeeInformation]
+GO
+
+
+/****** Object:  Table [dbo].[EmployeeTable]    Script Date: 10/13/2016 3:56:43 PM ******/
+SET ANSI_NULLS ON
+GO
+
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+SET ANSI_PADDING ON
+GO
+
+
+CREATE TABLE [dbo].[EmployeeTable](
+        [Age] [int] IDENTITY(1,1) NOT NULL,
+        [FirstName] [varchar](50) NOT NULL,
+        [LastName] [varchar](50) NOT NULL,
+        [Address] [varchar](50) NULL,
+        [SocialSecurity] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_EmployeeTable] PRIMARY KEY CLUSTERED 
+(
+        [SocialSecurity] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+GO
+
+
+SET ANSI_PADDING OFF
+GO
+
+
+2.)Design two tables that demonstrate the relationship between an individual author and her book, with at least four fields in each table.
+
+
+USE [Author]
+GO
+
+
+/****** Object:  Table [dbo].[BookTable]    Script Date: 10/13/2016 3:58:07 PM ******/
+SET ANSI_NULLS ON
+GO
+
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE TABLE [dbo].[BookTable](
+        [BookID] [int] NOT NULL,
+        [Title] [nvarchar](50) NOT NULL,
+        [PublishYear] [int] NOT NULL,
+        [Pages] [int] IDENTITY(1,1) NOT NULL,
+ CONSTRAINT [PK_BookTable] PRIMARY KEY CLUSTERED 
+(
+        [BookID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+GO
+
+
+ALTER TABLE [dbo].[BookTable]  WITH CHECK ADD  CONSTRAINT [FK_BookTable_AuthorTable] FOREIGN KEY([BookID])
+REFERENCES [dbo].[AuthorTable] ([AuthorID])
+GO
+
+
+ALTER TABLE [dbo].[BookTable] CHECK CONSTRAINT [FK_BookTable_AuthorTable]
+GO
+
+
+USE [Author]
+GO
+
+
+/****** Object:  Table [dbo].[AuthorTable]    Script Date: 10/13/2016 3:57:57 PM ******/
+SET ANSI_NULLS ON
+GO
+
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+SET ANSI_PADDING ON
+GO
+
+
+CREATE TABLE [dbo].[AuthorTable](
+        [AuthorID] [int] NOT NULL,
+        [FirstName] [varchar](50) NOT NULL,
+        [LastName] [varchar](50) NOT NULL,
+        [BookID] [int] NOT NULL,
+ CONSTRAINT [PK_AuthorTable] PRIMARY KEY CLUSTERED 
+(
+        [AuthorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+GO
+
+
+SET ANSI_PADDING OFF
+GO
+
+
+ALTER TABLE [dbo].[AuthorTable]  WITH CHECK ADD  CONSTRAINT [FK_AuthorTable_AuthorTable] FOREIGN KEY([AuthorID])
+REFERENCES [dbo].[AuthorTable] ([AuthorID])
+GO
+
+
+3.)Design three tables to illustrate the following relationship:
+* An animal shelter needs to keep track of their adoptions.
+   * They would like to keep information for each animal (type of animal, breed, and three other fields)
+   * Each family who is adopting (whether or not they have a fenced in yard, if they have other pets, and three other fields)
+   * And a record of each adoption (which family adopted which animal, the date of the adoption, and three other fields).
+
+
+
+
+USE [Pet-Owner]
+GO
+
+
+/****** Object:  Table [dbo].[AdoptionInfo]    Script Date: 10/13/2016 4:04:39 PM ******/
+SET ANSI_NULLS ON
+GO
+
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+SET ANSI_PADDING ON
+GO
+
+
+CREATE TABLE [dbo].[AdoptionInfo](
+        [AdoptionID] [int] IDENTITY(1,1) NOT NULL,
+        [Date] [date] NULL,
+        [Fee] [money] NULL,
+        [City] [varchar](50) NULL,
+        [Clerk] [varchar](50) NULL,
+        [FamilyID] [int] NULL,
+ CONSTRAINT [PK_AdoptionInfo] PRIMARY KEY CLUSTERED 
+(
+        [AdoptionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+GO
+
+
+SET ANSI_PADDING OFF
+GO
+
+
+ALTER TABLE [dbo].[AdoptionInfo]  WITH CHECK ADD  CONSTRAINT [FK_AdoptionInfo_FamilyName] FOREIGN KEY([FamilyID])
+REFERENCES [dbo].[FamilyName] ([FamilyID])
+GO
+
+
+ALTER TABLE [dbo].[AdoptionInfo] CHECK CONSTRAINT [FK_AdoptionInfo_FamilyName]
+GO
+
+
+USE [Pet-Owner]
+GO
+
+
+/****** Object:  Table [dbo].[AnimalType]    Script Date: 10/13/2016 4:04:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+SET ANSI_PADDING ON
+GO
+
+
+CREATE TABLE [dbo].[AnimalType](
+        [AnimalID] [int] IDENTITY(1,1) NOT NULL,
+        [AnimalType] [varchar](50) NULL,
+        [Breed] [varchar](50) NULL,
+        [DateEntered] [date] NULL,
+        [Age] [int] NULL,
+        [Spayed/Neutered] [bit] NULL,
+        [FamilyID] [int] NULL,
+ CONSTRAINT [PK_AnimalType] PRIMARY KEY CLUSTERED 
+(
+        [AnimalID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+GO
+
+
+SET ANSI_PADDING OFF
+GO
+
+
+ALTER TABLE [dbo].[AnimalType]  WITH CHECK ADD  CONSTRAINT [FK_AnimalType_AnimalType] FOREIGN KEY([FamilyID])
+REFERENCES [dbo].[FamilyName] ([FamilyID])
+GO
+
+
+ALTER TABLE [dbo].[AnimalType] CHECK CONSTRAINT [FK_AnimalType_AnimalType]
+GO
+
+
+USE [Pet-Owner]
+GO
+
+
+/****** Object:  Table [dbo].[FamilyName]    Script Date: 10/13/2016 4:04:49 PM ******/
+SET ANSI_NULLS ON
+GO
+
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+SET ANSI_PADDING ON
+GO
+
+
+CREATE TABLE [dbo].[FamilyName](
+        [FamilyID] [int] IDENTITY(1,1) NOT NULL,
+        [FamilyName] [varchar](50) NULL,
+        [FencedInYard] [bit] NULL,
+        [OtherPets] [int] NULL,
+        [Address] [varchar](50) NULL,
+        [Children] [int] NULL,
+ CONSTRAINT [PK_FamilyName] PRIMARY KEY CLUSTERED 
+(
+        [FamilyID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+GO
+
+
+SET ANSI_PADDING OFF
+GO
